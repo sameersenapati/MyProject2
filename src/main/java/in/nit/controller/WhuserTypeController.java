@@ -1,0 +1,137 @@
+package in.nit.controller;
+
+import java.util.Arrays;
+import java.util.List;
+
+//import javax.servlet.ServletContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import in.nit.model.WhuserType;
+import in.nit.service.IWhuserTypeService;
+import in.nit.util.WhuserTypeUtil;
+import in.nit.view.WhuserTypeExcelView;
+import in.nit.view.WhuserTypePdfView;
+
+@Controller
+@RequestMapping("/whuser")
+public class WhuserTypeController {
+	@Autowired
+	private IWhuserTypeService service;
+	/*
+	 * @Autowired private ServletContext context;
+	 */
+
+	@Autowired
+	private WhuserTypeUtil util;
+
+	@RequestMapping("/user")
+	public String showWhuser(Model model) {
+		//Form Backing Objects
+		model.addAttribute("whuserType", new WhuserType());
+		return "WhuserType";
+	}
+
+	@RequestMapping(value="/save",method = RequestMethod.POST)
+	public String saveWhuser(@ModelAttribute WhuserType whuserType,Model model){
+		model.addAttribute("whuserType", new WhuserType());
+		Integer id= service.saveWhuserType(whuserType);
+		String message="WhuserType '"+id+"' saved";
+		model.addAttribute("message", message);
+		return "WhuserType";
+	}
+
+	@RequestMapping("/display")
+	public String diplayAll(Model model) {
+		List<WhuserType> list=service.displayAllWhuerTypes();
+		model.addAttribute("list",list);
+		return "WhuserTypeData";
+	}
+
+	@RequestMapping("/delete")
+	public String deleteWhuserType(@RequestParam("wid") Integer id,Model model) {
+		service.deleteAllWhuserType(id);
+		String message = "WhuserType '"+id+"' deleted";
+		model.addAttribute("message",message);
+		List<WhuserType> list=service.displayAllWhuerTypes();
+		model.addAttribute("list",list);
+		return "WhuserTypeData";
+	}
+
+	@RequestMapping("/edit")
+	public String showEditPage(@RequestParam("wid") Integer id,Model model) {
+		WhuserType st = service.getOneWhuserType(id);
+		model.addAttribute("whuserType", st);
+		return "WhuserTypeEdit";
+	}
+
+	@RequestMapping(value="/update",method = RequestMethod.POST)
+	public String updateWhuserType(
+			@ModelAttribute WhuserType whuserType,Model model
+			) {
+		service.updateWhuserType(whuserType);
+		String message="WhuserType '"+whuserType.getUserId()+"' Updated";
+		model.addAttribute(message, message);
+		List<WhuserType> list=service.displayAllWhuerTypes();
+		model.addAttribute("list", list);
+		return "WhuserTypeData";
+	}
+
+	@RequestMapping(value="/view")
+	public String getOneWhuserType(@RequestParam("wid")Integer id,Model model) {
+		WhuserType st=service.getOneWhuserType(id);
+		model.addAttribute("view", st);
+		return "WhuserTypeView";
+
+	}
+
+	@RequestMapping("/excel")
+	public ModelAndView showExcel(
+			@RequestParam(value = "id",required = false) Integer id ){
+		ModelAndView m = new ModelAndView();
+		m.setView(new WhuserTypeExcelView());
+		if(id==null) {
+			//export all rows
+			List<WhuserType> list=service.displayAllWhuerTypes();
+			m.addObject("list",list);
+		}
+		else{
+			//export one row by id
+			WhuserType wt = service.getOneWhuserType(id);
+			m.addObject("list",Arrays.asList(wt));
+		}
+		return m;
+	}
+
+	@RequestMapping("/pdf")
+	public ModelAndView showPdf(
+			@RequestParam(value = "id",required = false) Integer id
+			) {
+		ModelAndView m = new ModelAndView();
+		m.setView(new WhuserTypePdfView());
+		if(id==null){//show all
+			List<WhuserType> list=service.displayAllWhuerTypes();
+			m.addObject("list",list);
+		}
+		else {//show one
+			WhuserType st = service.getOneWhuserType(id);
+			m.addObject("list",Arrays.asList(st));
+		}
+		return m;
+	}
+	@RequestMapping("/charts")
+	public String showCharts() {
+		List<Object[]> list=service.getWhuserCodeCount();
+		/*
+		 * String path=context.getRealPath("/"); util.generatePie(path, list);
+		 * util.generateBar(path, list);
+		 */	return "WhuserTypeCharts";
+	}
+}
