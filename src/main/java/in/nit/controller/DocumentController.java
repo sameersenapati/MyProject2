@@ -3,6 +3,7 @@ package in.nit.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import in.nit.service.IDocumentService;
 public class DocumentController {
 	@Autowired
 	private IDocumentService service;
+
 	//show documents upload page
 	@RequestMapping("/show")
 	public String showUploadpage(Model model) {
@@ -51,17 +53,20 @@ public class DocumentController {
 	}
 @RequestMapping("/download")
 	public void doDownload(
-			@RequestParam Integer fid
-			//HttpServletResponse resp
+			@RequestParam Integer fid,
+			HttpServletResponse resp
 			) {
 		//read one Object Based on id
 		Document doc=service.getOneDocument(fid);
-//		resp.addHeader("Content-Disposition", "attachment;fileName="+doc.getFileName());
-		/*
-		 * try { //copy data to OS 
-		 * FileCopyUtils.copy(doc.getFileData(),resp.getOutputStream()); }
-		 * catch(IOException e){ e.printStackTrace(); }
-		 */	}
+		resp.addHeader("Content-Disposition", "attachment;fileName="+doc.getFileName());
+		try {
+			//copy data to OS
+			FileCopyUtils.copy(doc.getFileData(),resp.getOutputStream());
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+	}
 
 
 

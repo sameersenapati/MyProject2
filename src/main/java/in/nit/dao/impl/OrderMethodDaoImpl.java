@@ -38,13 +38,21 @@ public class OrderMethodDaoImpl implements IOrderMethodDao {
 	public void updateOrderMethod(OrderMethod ob) {
 		ht.update(ob);
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public List<Object[]> getOrderMethodModeCount() {
 		String hql=" select orderMode,count(orderMode) "
 				+ " from in.nit.model.OrderMethod "
 				+ " group by orderMode ";
-				return (List<Object[]>) ht.find(hql);
+		return (List<Object[]>) ht.find(hql);
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<Object[]> getOrderIdAndCode(String mode) {
+		String hql= " select orderId,orderCode from in.nit.model.OrderMethod where orderCode=?";
+		List<Object[]> list=(List<Object[]>) ht.find(hql);
+		return list;
 	}
 }

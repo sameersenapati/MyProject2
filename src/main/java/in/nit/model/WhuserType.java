@@ -22,13 +22,16 @@ public class WhuserType {
 	@Column(name="umail")
 	private String userMail;
 	@Column(name="ucontact")
-	private Long userContact;
+	private String userContact;
 	@Column(name="uidtype")
 	private String userIdtype;
 	@Column(name="ifoth")
 	private String ifOther;
 	@Column(name="uidnum")
 	private String idNumber;
+	@Column(name="note")
+	private String note;
+
 
 	//zero param Constructor
 	public WhuserType() {
@@ -70,10 +73,10 @@ public class WhuserType {
 	public void setUserMail(String userMail) {
 		this.userMail = userMail;
 	}
-	public Long getUserContact() {
+	public String getUserContact() {
 		return userContact;
 	}
-	public void setUserContact(Long userContact) {
+	public void setUserContact(String userContact) {
 		this.userContact = userContact;
 	}
 	public String getUserIdtype() {
@@ -94,11 +97,19 @@ public class WhuserType {
 	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	@Override
 	public String toString() {
 		return "WhuserType [userId=" + userId + ", userType=" + userType + ", userCode=" + userCode + ", userFor="
 				+ userFor + ", userMail=" + userMail + ", userContact=" + userContact + ", userIdtype=" + userIdtype
-				+ ", ifOther=" + ifOther + ", idNumber=" + idNumber + "]";
+				+ ", ifOther=" + ifOther + ", idNumber=" + idNumber + ", note=" + note + "]";
 	}
+
+
 
 }//class

@@ -21,7 +21,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import
 org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import in.nit.model.UomType;
 
 
 @Configuration
@@ -52,8 +51,8 @@ public class AppConfig {
 		LocalSessionFactoryBean s = new LocalSessionFactoryBean();
 		s.setDataSource(ds());
 		s.setHibernateProperties(props());
-		s.setAnnotatedClasses(UomType.class);
-		//s.setPackagesToScan("in.nit.model");
+		//s.setAnnotatedClasses(UomType.class);
+		s.setPackagesToScan("in.nit.model");
 		return  s;
 	}
 	@Bean

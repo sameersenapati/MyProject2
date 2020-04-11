@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-//import javax.servlet.ServletContext;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +21,7 @@ import in.nit.model.UomType;
 import in.nit.service.IUomTypeService;
 import in.nit.util.CommonUtil;
 import in.nit.util.UomTypeUtil;
+import in.nit.validator.UomValidator;
 import in.nit.view.UomTypeExcelView;
 import in.nit.view.UomTypePdfView;
 
@@ -26,15 +29,17 @@ import in.nit.view.UomTypePdfView;
 @RequestMapping("/uom")
 public class UomTypeController {
 
+
 	@Autowired
 	private IUomTypeService service;
 
-	/*
-	 * @Autowired private ServletContext context;
-	 */
+	@Autowired
+	private ServletContext context;
+
 	@Autowired
 	private UomTypeUtil util;
-
+	@Autowired
+	private UomValidator validator;
 
 	@RequestMapping("/user")
 	public String showUserPage(Model model) {
@@ -50,12 +55,26 @@ public class UomTypeController {
 	}
 
 	@RequestMapping(value="/save",method = RequestMethod.POST)
-	public String saveUom(@ModelAttribute UomType uomType,Model model) {
-		Integer id=service.saveUomType(uomType);
-		String message="UomType '"+id+"' saved";
-		model.addAttribute("message", message);
+	public String saveUom(@ModelAttribute UomType uomType,Errors errors,ModelMap map) {
+		//must be called before save
+		validator.validate(uomType, errors);
+		/*
+		 * Integer id=service.saveUomType(uomType); String
+		 * message="UomType '"+id+"' saved"; map.addAttribute("message", message);
+		 * return "UomPage";
+		 */
+		if(!errors.hasErrors()) { //If no errors are exist
+			Integer  id=service.saveUomType(uomType);
+			map.addAttribute("message","Uom created with Id:"+id);
+			map.addAttribute("uom",new UomType()) ;
+			}
+		    else { //If errors exist
+		    map.addAttribute("message","Please Check all Errors!");
+			}
 		return "UomPage";
 	}
+
+
 
 	@RequestMapping("/display")
 	public String diplayAll(Model model) {
@@ -141,9 +160,9 @@ public class UomTypeController {
 	@RequestMapping("/charts")
 	public String showCharts() {
 		List<Object[]> list=service.getUomModelCount();
-		/*
-		 * String path=context.getRealPath("/"); util.generatePie(path, list);
-		 * util.generateBar(path, list);
-		 */	return "UomTypeCharts";
+		String path=context.getRealPath("/");
+		util.generatePie(path, list);
+		util.generateBar(path, list);
+		return "UomTypeCharts";
 	}
 }

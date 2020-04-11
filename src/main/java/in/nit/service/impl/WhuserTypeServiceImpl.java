@@ -37,9 +37,26 @@ public class WhuserTypeServiceImpl implements IWhuserTypeService {
 	public void updateWhuserType(WhuserType ob) {
 		dao.updateWhuserType(ob);
 	}
-	
+
 	@Override
 	public List<Object[]> getWhuserCodeCount() {
 		return dao.getWhuserCodeCount();
 	}
+	@Transactional(readOnly = true)
+	public boolean isUserCodeExist(String userCode) {
+		return dao.isUserCodeExist(userCode);
+	}
+	@Transactional(readOnly = true)
+	public boolean isUserMailExist(String userMail) {
+		return dao.isUserMailExist(userMail);
+	}
+	@Transactional(readOnly = true)
+	public boolean isUserContactExist(String userContact) {
+		return dao.isUserContactExist(userContact);
+	}
+	@Transactional(readOnly = true)
+	public boolean isUserIdNumberExist(String idNumber) {
+		return dao.isUserIdNumberExist(idNumber);
+	}
+
 }

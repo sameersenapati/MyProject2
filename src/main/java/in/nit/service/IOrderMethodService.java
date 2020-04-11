@@ -11,5 +11,6 @@ public interface IOrderMethodService {
 	public OrderMethod getOneOrderMethod(Integer id);
 	public void updateOrderMethod(OrderMethod ob);
 	public List<Object[]> getOrderMethodModeCount();
+	public List<Object[]> getOrderIdAndCode(String mode);
  
 }

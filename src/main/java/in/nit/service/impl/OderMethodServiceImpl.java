@@ -35,12 +35,15 @@ public class OderMethodServiceImpl implements IOrderMethodService {
 		return dao.getOneOrderMethod(id);
 	}
 	@Transactional
-	
 	public void updateOrderMethod(OrderMethod ob) {
 		dao.updateOrderMethod(ob);
 	}
-	@Override
+	@Transactional
 	public List<Object[]> getOrderMethodModeCount() {
 		return dao.getOrderMethodModeCount();
+	}
+	@Transactional
+	public List<Object[]> getOrderIdAndCode(String mode) {
+		return dao.getOrderIdAndCode(mode);
 	}
 }

@@ -109,6 +109,10 @@
 								<form:options items="${uomMap}" itemValue="uomId"
 									itemLabel="uomModel" />
 							</form:select>
+							<form:select path="omPurchaseOb.partId" class="form-control">
+								<form:option value="">-SELECT-</form:option>
+								<form:options items="${omPurchaseMap}"  />
+							</form:select>
 						</div>
 						<div class="col-4">
 							<!-- Error Message -->
@@ -120,7 +124,7 @@
 							<label for="">ORDER METHOD</label>
 						</div>
 						<div class="col-4">
-							<form:select path="omSaleOb.orderId" class="form-control">
+							<form:select path="omOb.orderId" class="form-control">
 								<form:option value="">-SELECT-</form:option>
 								<form:options items="${omSaleMap}" />
 							</form:select>

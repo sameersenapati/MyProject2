@@ -28,12 +28,19 @@ public class PartType {
 	private Double partBaseCost;
 	@Column(name="pbcurrency")
 	private Double partBaseCurrency;
+
 	@ManyToOne
 	@JoinColumn(name="uomIdFk")
 	private UomType uomOb;
+
 	@ManyToOne
 	@JoinColumn(name="orderIdFk")
 	private OrderMethod omOb;
+
+	@ManyToOne
+	@JoinColumn(name="orderPurchaseIdFk")
+	private OrderMethod omPurchaseOb;
+
 	@Column(name="description")
 	private String description;
 
@@ -117,6 +124,15 @@ public class PartType {
 		this.partBaseCurrency = partBaseCurrency;
 	}
 
+
+	public OrderMethod getOmPurchaseOb() {
+		return omPurchaseOb;
+	}
+
+	public void setOmPurchaseOb(OrderMethod omPurchaseOb) {
+		this.omPurchaseOb = omPurchaseOb;
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -129,7 +145,7 @@ public class PartType {
 	public String toString() {
 		return "PartType [partId=" + partId + ", partCode=" + partCode + ", partWidth=" + partWidth + ", partLength="
 				+ partLength + ", partHeight=" + partHeight + ", partBaseCost=" + partBaseCost + ", partBaseCurrency="
-				+ partBaseCurrency + ", uomOb=" + uomOb + ", omOb=" + omOb + ", description=" + description + "]";
+				+ partBaseCurrency + ", uomOb=" + uomOb + ", omOb=" + omOb + ", omPurchaseOb=" + omPurchaseOb
+				+ ", description=" + description + "]";
 	}
-
 }//class

@@ -52,4 +52,9 @@ public class UomTypeServiceImpl implements IUomTypeService {
 	public List<Object[]> getUomIdAndUomModel() {
 		return dao.getUomIdAndUomModel();
 	}
+
+	@Override
+	public boolean isUomModelExist(String uomModel) {
+		return dao.isUomModelExist(uomModel);
+	}
 }

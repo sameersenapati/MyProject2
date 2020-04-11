@@ -8,7 +8,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 	<h3>Welcome to PartType Data Page</h3>
+	
 	<a href="excel"> <img src="../resources/images/excel-logo.png"
 		title="Convert To ExcelFormat" width="40" height="50" /></a>
 	<a href="pdf"> <img src="../resources/images/PDFicon.png"
@@ -43,7 +45,8 @@
 						<td>${ob.partCurrency}</td>
 						<td>${ob.partDesc}</td>
 						<td>${ob.uomOb.uomModel}</td>
-						<td><c:out value="${ob.omSaleOb.orderCode}" /></td>
+						<td>${ob.omPurchaseOb.orderCode}</td>
+						<td>${ob.omSaleOb.orderCode}</td>
 						<td><a href="delete?pid=${ob.partId}"><img
 								src="../resources/images/delete.jpg" title="delete" width="50"
 								height="40"></a></td>
@@ -61,6 +64,9 @@
 			<h4>NO DATA FOUND!!</h4>
 		</c:otherwise>
 	</c:choose>
+	
 	${message}
+
 </body>
+
 </html>

@@ -3,11 +3,13 @@ package in.nit.controller;
 import java.util.Arrays;
 import java.util.List;
 
-//import javax.servlet.ServletContext;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import in.nit.model.WhuserType;
 import in.nit.service.IWhuserTypeService;
 import in.nit.util.WhuserTypeUtil;
+import in.nit.validator.WhuserTypeValidator;
 import in.nit.view.WhuserTypeExcelView;
 import in.nit.view.WhuserTypePdfView;
 
@@ -25,27 +28,39 @@ import in.nit.view.WhuserTypePdfView;
 public class WhuserTypeController {
 	@Autowired
 	private IWhuserTypeService service;
-	/*
-	 * @Autowired private ServletContext context;
-	 */
-
+	@Autowired
+	private ServletContext context;
 	@Autowired
 	private WhuserTypeUtil util;
-
+	@Autowired
+	private WhuserTypeValidator validator;
 	@RequestMapping("/user")
 	public String showWhuser(Model model) {
 		//Form Backing Objects
 		model.addAttribute("whuserType", new WhuserType());
-		return "WhuserType";
+		return "WhuserTypeRegister";
 	}
 
 	@RequestMapping(value="/save",method = RequestMethod.POST)
-	public String saveWhuser(@ModelAttribute WhuserType whuserType,Model model){
-		model.addAttribute("whuserType", new WhuserType());
-		Integer id= service.saveWhuserType(whuserType);
-		String message="WhuserType '"+id+"' saved";
-		model.addAttribute("message", message);
-		return "WhuserType";
+	public String saveWhuser(@ModelAttribute WhuserType whuserType,Errors errors,ModelMap map){
+		//call validator
+		validator.validate(whuserType, errors);
+
+		if(!errors.hasErrors()) { //has no errors
+			Integer id=service.saveWhuserType(whuserType);
+			map.addAttribute("message","WhuserType created with Id:"+id);
+			map.addAttribute("whuserType",new WhuserType()) ;
+		}
+		else {
+			//errors are added by validator
+			map.addAttribute("message","Please check All Errors");
+		}
+		/*
+		 * map.addAttribute("whuserType", new WhuserType()); Integer id=
+		 * service.saveWhuserType(whuserType); String
+		 * message="WhuserType '"+id+"' saved"; map.addAttribute("message", message);
+		 */
+		return "WhuserTypeRegister";
 	}
 
 	@RequestMapping("/display")
@@ -78,7 +93,7 @@ public class WhuserTypeController {
 			) {
 		service.updateWhuserType(whuserType);
 		String message="WhuserType '"+whuserType.getUserId()+"' Updated";
-		model.addAttribute(message, message);
+		model.addAttribute("message", message);
 		List<WhuserType> list=service.displayAllWhuerTypes();
 		model.addAttribute("list", list);
 		return "WhuserTypeData";
@@ -129,9 +144,9 @@ public class WhuserTypeController {
 	@RequestMapping("/charts")
 	public String showCharts() {
 		List<Object[]> list=service.getWhuserCodeCount();
-		/*
-		 * String path=context.getRealPath("/"); util.generatePie(path, list);
-		 * util.generateBar(path, list);
-		 */	return "WhuserTypeCharts";
+		String path=context.getRealPath("/");
+		util.generatePie(path, list);
+		util.generateBar(path, list);
+		return "WhuserTypeCharts";
 	}
 }

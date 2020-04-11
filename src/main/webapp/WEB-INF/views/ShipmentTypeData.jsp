@@ -17,7 +17,7 @@
 				<H3>WELCOME TO SHIPMENT TYPE DATA PAGE</H3>
 
 			</div>
-			<div class="card-body">
+			<div class="card-body" >
 				<a href="excel"><img src="../resources/images/excel-logo.png"
 					width="100" height="40" /></a> <a href="pdf"><img
 					src="../resources/images/PDFicon.png" width="100" height="40" /></a>
@@ -52,7 +52,6 @@
 									<td><a href="view?sid=${ob.shipId}" class="btn btn-warning"> 
 									<!-- <img src="../resources/images/view.png" width="20" height="20" /> -->
 									VIEW
-									
 									</a></td>
 								</tr>
 							</c:forEach>
@@ -82,6 +81,7 @@
 
 	</div>
 	<!-- container end -->
+	
 </body>
 </html>
 

@@ -13,4 +13,10 @@ public interface IWhuserTypeDao {
 	public void updateWhuserType(WhuserType ob);
 	public List<Object[]> getWhuserCodeCount();
 
+	//methods for serverside Validation
+	boolean isUserCodeExist(String userCode);
+	boolean isUserMailExist(String userMail);
+	boolean isUserContactExist(String userContact);
+    boolean isUserIdNumberExist(String idNumber);
+
 }

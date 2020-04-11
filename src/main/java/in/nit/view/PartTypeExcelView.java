@@ -40,7 +40,7 @@ public class PartTypeExcelView extends AbstractXlsxView {
 		r.createCell(5).setCellValue("COST");
 		r.createCell(6).setCellValue("CURRENCY");
 		r.createCell(7).setCellValue("DESCRIPTION");
-
+      
 	}
 
 	private void setBody(Sheet s,List<PartType> list) {
@@ -55,7 +55,7 @@ public class PartTypeExcelView extends AbstractXlsxView {
 			r.createCell(5).setCellValue(st.getPartBaseCost());
 			r.createCell(6).setCellValue(st.getPartBaseCurrency());
 			r.createCell(7).setCellValue(st.getDescription());
-
+          
 		}
 	}
 

@@ -48,6 +48,7 @@ public class UomTypeDaoImpl  implements IUomTypeDao{
 				+ " group by uomModel ";
 		return (List<Object[]>) ht.find(hql);
 	}
+
 	@Override
 	public List<Object[]> getUomIdAndUomModel() {
 		String hql="select uomId,uomModel from in.nit.model.UomType";
@@ -55,5 +56,31 @@ public class UomTypeDaoImpl  implements IUomTypeDao{
 		List<Object[]> list=(List<Object[]>) ht.find(hql);
 		return list;
 	}
+
+	@Override
+	public boolean isUomModelExist(String uomModel) {
+		boolean flag=false;
+		String hql=" select count(uomModel) from in.nit.model.UomType where uomModel=?0 ";
+		@SuppressWarnings({ "unchecked", "deprecation" })
+		List<Long> list=(List<Long>) ht.find(hql, uomModel);
+		if(list!= null && !list.isEmpty()) {
+			long count=list.get(0);
+			if(count==0)
+				flag=false;
+			else
+				flag=true;
+		}
+		return flag;
+		/*
+		 * String
+		 * hql=" select count(uomModel) from in.nit.model.UomType where uomModel=?0 ";
+		 * 
+		 * @SuppressWarnings({ "unchecked", "deprecation" }) List<Long>
+		 * list=(List<Long>) ht.find(hql,uomModel); if(list!=null && !list.isEmpty()) {
+		 * long count=list.get(0); if(count==0) flag=false; else flag=true; }
+		 *return flag;*/
+
+	}
+
 
 }

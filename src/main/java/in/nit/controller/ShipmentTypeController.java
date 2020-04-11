@@ -3,6 +3,7 @@ package in.nit.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,28 +26,29 @@ public class ShipmentTypeController {
 	@Autowired
 	private IShipmentTypeService service;
 
-	/*
-	 * @Autowired private ServletContext context;
-	 */@Autowired
+	@Autowired
+	private ServletContext context;
+	@Autowired
 	private ShipmentTypeUtil util;
 	
 
 	@RequestMapping("/regi")
-	public String showUserPage(Model model,@ModelAttribute ShipmentType shipmentType) {
+	public String showUserPage(Model model) {
 		//form backing Objects
 		model.addAttribute("shipmentType", new ShipmentType());
 		return "ShipmentTypeRegister";
 	}
 
 	@RequestMapping(value="/save",method = RequestMethod.POST)
-	public String saveUom(@ModelAttribute ShipmentType shipmentType,Model model) {
+	public String saveShipment(@ModelAttribute ShipmentType shipmentType,Model model) {
+		model.addAttribute("shipmentType",new ShipmentType());
 		Integer id=service.saveShipmentType(shipmentType);
 		String message="ShipmentType '"+id+"' saved";
 		model.addAttribute("message", message);
 		return "ShipmentTypeRegister";
 	}
 
-	@RequestMapping("/display")
+	@RequestMapping("/all")
 	public String diplayAll(Model model) {
 		List<ShipmentType> list=service.displayAllShipmentTypes();
 		model.addAttribute("list",list);
@@ -70,7 +72,7 @@ public class ShipmentTypeController {
 	}
 
 	@RequestMapping(value="/update",method = RequestMethod.POST)
-	public String updateUomType(
+	public String updateShipmentType(
 			@ModelAttribute ShipmentType shipmentType,Model model
 			) {
 		service.updateShipmentType(shipmentType);
@@ -130,9 +132,9 @@ public class ShipmentTypeController {
 	@RequestMapping("/charts")
 	public String showCharts() {
 		List<Object[]> list=service.getShipmentModeCount();
-		/*
-		 * String path=context.getRealPath("/"); util.generatePie(path, list);
-		 * util.generateBar(path, list);
-		 */		return "ShipmentTypeCharts";
+		String path=context.getRealPath("/");
+		util.generatePie(path, list);
+		util.generateBar(path, list);
+		return "ShipmentTypeCharts";
 	}
 }

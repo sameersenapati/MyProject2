@@ -60,7 +60,7 @@
 							<label for="enbShip">ENABLE SHIPMENT</label>
 						</div>
 						<div class="col-4">
-							<form:select path="enbShip" class="form-control">
+							<form:select path="enbShip" class="form-control"> 
 								<form:option value="">-SELECT-</form:option>
 								<form:option value="YES">YES</form:option>
 								<form:option value="NO">NO</form:option>

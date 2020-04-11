@@ -27,7 +27,7 @@ public class ShipmentTypeDaoImpl implements IShipmentTypeDao{
 	@Override
 	public void deleteShipmentById(Integer id) {
 		ht.delete(new ShipmentType(id));
-		
+
 	}
 
 	@Override
@@ -49,4 +49,12 @@ public class ShipmentTypeDaoImpl implements IShipmentTypeDao{
 		return (List<Object[]>) ht.find(hql);
 	}
 
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	@Override
+	public List<Object[]> getShipIdAndCode() {
+		String hql = " select  id,orderCode from   "
+				+ ShipmentType.class.getName() +
+				" where enbShip = 'YES' ";
+		return (List<Object[]>) ht.find(hql);
+	}
 }

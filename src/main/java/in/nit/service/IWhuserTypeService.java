@@ -11,5 +11,10 @@ public interface IWhuserTypeService {
 	public WhuserType getOneWhuserType(Integer id);
 	public void updateWhuserType(WhuserType ob);
 	public List<Object[]> getWhuserCodeCount();
-
+	
+	//methods for serverside validation
+	public boolean isUserCodeExist(String userCode);
+	boolean isUserMailExist(String userMail);
+	boolean isUserContactExist(String userContact);
+	public boolean isUserIdNumberExist(String idNumber);
 }
